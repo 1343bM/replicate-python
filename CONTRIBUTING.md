@@ -4,7 +4,7 @@
   - [Signing your work](#signing-your-work)
   - [How to sign off your commits](#how-to-sign-off-your-commits)
 - [Development](#development)
-    - [Environment variables](#environment-variables)
+  - [Environment variables](#environment-variables)
 - [Publishing a release](#publishing-a-release)
 
 ## Making a contribution
@@ -55,7 +55,7 @@ You can also create a git hook which will sign off all your commits automaticall
 
 First, create the hook file and make it executable:
 
-```sh
+```console
 cd your/checkout/of/replicate-python
 touch .git/hooks/prepare-commit-msg
 chmod +x .git/hooks/prepare-commit-msg
@@ -63,7 +63,7 @@ chmod +x .git/hooks/prepare-commit-msg
 
 Then paste the following into the file:
 
-```
+```sh
 #!/bin/sh
 
 NAME=$(git config user.name)
@@ -86,18 +86,15 @@ git interpret-trailers --if-exists doNothing --trailer \
 
 ## Development
 
-To run the tests:
+The Python project is managed using [`rye`](https://rye.astral.sh). 
+Run the setup script to install Rye and install the project's dependencies.
 
-```sh
-pip install -r requirements-dev.txt
-pytest
+```console
+./script/setup
 ```
 
-To install the package in development:
-
-```sh
-pip install -e .
-```
+You can run the `format`, `lint`, and `test` scripts before commiting
+to validate your changes locally before going through CI.
 
 ### Environment variables
 
@@ -106,12 +103,12 @@ pip install -e .
 
 ## Publishing a release
 
-This project has a [GitHub Actions workflow](https://github.com/replicate/replicate-python/blob/ab4439ee02d1f157cd3b904f5e0232b69bbae707/.github/workflows/ci.yaml#L37-L63) that publishes the `replicate` package to PyPI. The release process is triggered by manually creating and pushing a new git tag.
+This project has a [GitHub Actions workflow](/.github/workflows/ci.yaml) that publishes the `replicate` package to PyPI. The release process is triggered by manually creating and pushing a new git tag.
 
-First, set the version number in [replicate/__about__.py](replicate/__about__.py) and commit it to the `main` branch:
+First, set the version number in [pyproject.toml](pyproject.toml) and commit it to the `main` branch:
 
 ```
-__version__ = "0.0.1a7"
+version = "0.7.0"
 ```
 
 Then run the following in your local checkout:
@@ -119,7 +116,7 @@ Then run the following in your local checkout:
 ```sh
 git checkout main
 git fetch --all --tags
-git tag 0.0.1a7 
+git tag 0.7.0
 git push --tags
 ```
 
